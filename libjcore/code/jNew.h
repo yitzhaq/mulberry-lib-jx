@@ -55,9 +55,12 @@
 #endif
 #define new new(__FILE__, __LINE__)
 
+// Disable delete macro for C++11+ due to conflict with = delete syntax
+#if __cplusplus < 201103L
 #ifdef delete
 #undef delete
 #endif
 #define delete JLocateDelete(__FILE__, __LINE__), delete
+#endif
 
 #endif	/* _J_ARRAY_NEW_OVERRIDABLE */
