@@ -1,7 +1,7 @@
 /******************************************************************************
  JXCursor.h
 
-	Copyright © 1996 by John Lindal. All rights reserved.
+	Copyright ï¿½ 1996 by John Lindal. All rights reserved.
 
  ******************************************************************************/
 
@@ -36,8 +36,8 @@ struct JXCursor
 {
 	JCoordinate		w,h;
 	JCoordinate		hotx,hoty;
-	char*			data;
-	char*			mask;
+	unsigned char*	data;
+	unsigned char*	mask;
 };
 
 // custom cursors provided by JX

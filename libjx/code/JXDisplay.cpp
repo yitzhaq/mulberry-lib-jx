@@ -38,7 +38,7 @@
 
 	BASE CLASS = virtual JBroadcaster
 
-	Copyright © 1996-99 by John Lindal. All rights reserved.
+	Copyright ï¿½ 1996-99 by John Lindal. All rights reserved.
 
  ******************************************************************************/
 
@@ -735,12 +735,12 @@ JXDisplay::CreateCustomXCursor
 
 	Pixmap sourcePixmap =
 		XCreateBitmapFromData(itsXDisplay, GetRootWindow(),
-							  cursor.data, cursor.w, cursor.h);
+							  reinterpret_cast<const char*>(cursor.data), cursor.w, cursor.h);
 	assert( sourcePixmap != 0 );
 
 	Pixmap maskPixmap =
 		XCreateBitmapFromData(itsXDisplay, GetRootWindow(),
-							  cursor.mask, cursor.w, cursor.h);
+							  reinterpret_cast<const char*>(cursor.mask), cursor.w, cursor.h);
 	assert( maskPixmap != 0 );
 
 	const Cursor cursorID =
