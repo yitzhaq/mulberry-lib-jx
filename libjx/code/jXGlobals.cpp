@@ -885,8 +885,10 @@ JXOpenLocaleFile
 	input.close();
 
 	input.clear();
-	// Check for standard X11 path or OpenWindows (Solaris) path
-	JString locale_path = "/usr/X11R6/lib/X11/locale/";
+	// Check for modern X11 path, fallback to legacy paths
+	JString locale_path = "/usr/share/X11/locale/";
+	if (!JDirectoryExists(locale_path))
+		locale_path = "/usr/X11R6/lib/X11/locale/";
 	if (!JDirectoryExists(locale_path))
 		locale_path = "/usr/openwin/lib/locale/";
 
