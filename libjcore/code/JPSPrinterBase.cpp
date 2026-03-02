@@ -36,7 +36,7 @@
 
 	BASE CLASS = none
 
-	Copyright © 1996-97 by John Lindal & Glenn Bach. All rights reserved.
+	Copyright ï¿½ 1996-97 by John Lindal & Glenn Bach. All rights reserved.
 
  ******************************************************************************/
 
@@ -925,6 +925,16 @@ JPSPrinterBase::PSSetFont
 		JString fontName, charSet;
 		JFontManager::ExtractCharacterSet(fontManager->GetFontName(id),
 										  &fontName, &charSet);
+
+		// Replace spaces with hyphens for valid PostScript font names
+		// (e.g. "Lucida Bright" -> "Lucida-Bright")
+		const JSize nameLen = fontName.GetLength();
+		for (JIndex j=1; j<=nameLen; j++)
+			{
+			if (fontName.GetCharacter(j) == ' ')
+				fontName.SetCharacter(j, '-');
+			}
+
 		*itsFile << '/';
 		fontName.Print(*itsFile);
 
