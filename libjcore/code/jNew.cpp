@@ -28,7 +28,7 @@ void*
 operator new
 	(
 	size_t size
-	) throw(std::bad_alloc)
+	)
 {
 	return operator new(size, "<UNKNOWN>", 0);
 }
@@ -58,7 +58,7 @@ void*
 operator new[]
 	(
 	size_t size
-	) throw(std::bad_alloc)
+	)
 {
 	return operator new[](size, "<UNKNOWN>", 0);
 }
@@ -88,7 +88,7 @@ void
 operator delete
 	(
 	void* memory
-	) throw()
+	) noexcept
 {
 	JMemoryManager::Instance()->Delete(memory, kJFalse);
 }
@@ -102,7 +102,7 @@ void
 operator delete[]
 	(
 	void* memory
-	) throw()
+	) noexcept
 {
 	JMemoryManager::Instance()->Delete(memory, kJTrue);
 }

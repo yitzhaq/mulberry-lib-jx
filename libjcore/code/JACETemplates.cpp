@@ -1,7 +1,7 @@
 /******************************************************************************
  JACETemplates.cpp
 
-	Copyright © 1998 by John Lindal. All rights reserved.
+	Copyright ï¿½ 1998 by John Lindal. All rights reserved.
 
  ******************************************************************************/
 
@@ -49,14 +49,22 @@ template class ACE_Svc_Handler<JTemplateType, ACE_SYNCH>;
 template class ACE_Svc_Handler<JTemplateType, ACE_SYNCH>;
 #undef JTemplateType
 
+#if ACE_MT_SAFE != 0
 template class ACE_Task<ACE_MT_SYNCH>;
+#endif
 template class ACE_Task<ACE_NULL_SYNCH>;
 template class ACE_Message_Queue<ACE_NULL_SYNCH>;
+#if ACE_MT_SAFE != 0
 template class ACE_Message_Queue<ACE_MT_SYNCH>;
+#endif
 template class ACE_Module<ACE_NULL_SYNCH>;
+#if ACE_MT_SAFE != 0
 template class ACE_Module<ACE_MT_SYNCH>;
+#endif
 template class ACE_Thru_Task<ACE_NULL_SYNCH>;
+#if ACE_MT_SAFE != 0
 template class ACE_Thru_Task<ACE_MT_SYNCH>;
+#endif
 
 #define JTemplateType iovec
 #include <JArray.tmpls>

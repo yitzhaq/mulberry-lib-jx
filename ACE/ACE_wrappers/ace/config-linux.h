@@ -13,6 +13,11 @@
 
 #include "ace/config-linux-common.h"
 
+// stropts.h removed from glibc 2.30+ (Ubuntu 20.04+)
+#define ACE_LACKS_STROPTS_H
+#undef ACE_HAS_STRBUF_T       // Use ACE's fallback strbuf definition
+#define ACE_LACKS_STRRECVFD   // Use ACE's fallback strrecvfd definition
+
 #define ACE_HAS_SVR4_DYNAMIC_LINKING
 #define ACE_HAS_AUTOMATIC_INIT_FINI
 #define ACE_HAS_DLSYM_SEGFAULT_ON_INVALID_HANDLE

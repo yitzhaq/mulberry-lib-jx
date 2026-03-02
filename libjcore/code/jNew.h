@@ -27,16 +27,16 @@
 #include <stdlib.h> // For size_t
 #include <jTypes.h>
 
-	void* operator new(size_t size) throw(std::bad_alloc);
+	void* operator new(size_t size);
 
 	void* operator new(size_t size, const JCharacter* file, const JUInt32 line);
 
-	void* operator new[](size_t size) throw(std::bad_alloc);
+	void* operator new[](size_t size);
 
 	void* operator new[](size_t size, const JCharacter* file, const JUInt32 line);
 
-	void operator delete(void* memory) throw();
-	void operator delete[](void* memory) throw();
+	void operator delete(void* memory) noexcept;
+	void operator delete[](void* memory) noexcept;
 
 	void JLocateDelete(const JCharacter* file, const JUInt32 line);
 
@@ -55,9 +55,12 @@
 #endif
 #define new new(__FILE__, __LINE__)
 
+// Disable delete macro for C++11+ due to conflict with = delete syntax
+#if __cplusplus < 201103L
 #ifdef delete
 #undef delete
 #endif
 #define delete JLocateDelete(__FILE__, __LINE__), delete
+#endif
 
 #endif	/* _J_ARRAY_NEW_OVERRIDABLE */
