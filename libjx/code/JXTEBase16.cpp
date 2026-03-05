@@ -1632,9 +1632,15 @@ JXTEBase16::GetAvailDataTypes
 	for (JIndex i=1; i<=typeCount; i++)
 		{
 		const Atom type = typeList.GetElement(i);
-		if (type == XA_STRING ||
+		if (type == selMgr->GetUTF8StringXAtom())
+			{
+			// Prefer UTF8_STRING for proper Unicode support
+			*canGetText = kJTrue;
+			*textType   = type;
+			// Don't break — still check for styled text
+			}
+		else if (type == XA_STRING ||
 			type == selMgr->GetMimePlainTextXAtom() ||
-			type == selMgr->GetUTF8StringXAtom() ||
 			(!(*canGetText) && type == selMgr->GetTextXAtom()))
 			{
 			*canGetText = kJTrue;
