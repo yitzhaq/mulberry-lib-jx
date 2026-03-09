@@ -1639,9 +1639,10 @@ JXTEBase16::GetAvailDataTypes
 			*textType   = type;
 			// Don't break — still check for styled text
 			}
-		else if (type == XA_STRING ||
-			type == selMgr->GetMimePlainTextXAtom() ||
-			(!(*canGetText) && type == selMgr->GetTextXAtom()))
+		else if (*textType != selMgr->GetUTF8StringXAtom() &&
+			(type == XA_STRING ||
+			 type == selMgr->GetMimePlainTextXAtom() ||
+			 (!(*canGetText) && type == selMgr->GetTextXAtom())))
 			{
 			*canGetText = kJTrue;
 			*textType   = type;
