@@ -6,7 +6,7 @@
 
 	BASE CLASS = JXSelectionData
 
-	Copyright © 1999 by John Lindal. All rights reserved.
+	Copyright ï¿½ 1999 by John Lindal. All rights reserved.
 
  ******************************************************************************/
 
@@ -112,6 +112,8 @@ JXTextSelection::AddTypes
 {
 	JXSelectionManager* selMgr = GetSelectionManager();
 
+	// Prefer UTF8_STRING for proper Unicode support
+	AddType(selMgr->GetUTF8StringXAtom());
 	AddType(selMgr->GetMimePlainTextXAtom());
 	itsStyledText0XAtom = AddType(kStyledText0XAtomName);
 
@@ -322,10 +324,24 @@ JXTextSelection::ConvertData
 
 	JXSelectionManager* selMgr = GetSelectionManager();
 	const Atom mimeText        = selMgr->GetMimePlainTextXAtom();
+	const Atom utf8String      = selMgr->GetUTF8StringXAtom();
 
 	JIndexRange selection;
 
-	if ((requestType == XA_STRING ||
+	// Prefer UTF8_STRING for proper Unicode support
+	if (requestType == utf8String && itsText != NULL)
+		{
+		*returnType = utf8String;
+		*dataLength = itsText->GetLength();
+		*data       = new unsigned char[ *dataLength ];
+		if (*data != NULL)
+			{
+			memcpy(*data, itsText->GetCString(), *dataLength);
+			return kJTrue;
+			}
+		}
+
+	else if ((requestType == XA_STRING ||
 		 requestType == mimeText ||
 		 requestType == selMgr->GetTextXAtom()) &&
 		itsText != NULL)

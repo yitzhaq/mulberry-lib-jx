@@ -6,7 +6,7 @@
 
 	BASE CLASS = JXSelectionData
 
-	Copyright © 1999 by John Lindal. All rights reserved.
+	Copyright ï¿½ 1999 by John Lindal. All rights reserved.
 
  ******************************************************************************/
 
@@ -113,13 +113,14 @@ JXTextSelection16::AddTypes
 {
 	JXSelectionManager* selMgr = GetSelectionManager();
 
+	// Prefer UTF8_STRING for proper Unicode support
+	AddType(selMgr->GetUTF8StringXAtom());
 	AddType(selMgr->GetMimePlainTextXAtom());
 	itsStyledText0XAtom = AddType(kStyledText0XAtomName);
 
 	if (selectionName != GetDNDSelectionName())
 		{
 		AddType(XA_STRING);
-		AddType(selMgr->GetUTF8StringXAtom());
 		AddType(selMgr->GetTextXAtom());
 		}
 }
