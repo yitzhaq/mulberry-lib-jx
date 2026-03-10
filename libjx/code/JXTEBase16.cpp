@@ -1745,21 +1745,23 @@ JXTEBase16::GetSelectionData
 			selMgr->GetData(selectionName, time, textType,
 							&textReturnType, &data, &dataLength, &delMethod))
 			{
-			if (textReturnType == XA_STRING ||
+			// Check UTF8_STRING first - if we requested it, use UTF-8 decoding
+			if (textType == selMgr->GetUTF8StringXAtom() ||
+				textReturnType == selMgr->GetUTF8StringXAtom())
+				{
+				gotData = kJTrue;
+				JString utf8(reinterpret_cast<JCharacter*>(data), dataLength);
+				JString16 utf16;
+				utf16.FromUTF8(utf8);
+				*text = utf16;
+				}
+			else if (textReturnType == XA_STRING ||
 				textReturnType == selMgr->GetMimePlainTextXAtom())
 				{
 				gotData = kJTrue;
 				JString ascii(reinterpret_cast<JCharacter*>(data), dataLength);
 				JString16 utf16;
 				utf16.FromASCII(ascii);
-				*text = utf16;
-				}
-			else if (textReturnType == selMgr->GetUTF8StringXAtom())
-				{
-				gotData = kJTrue;
-				JString utf8(reinterpret_cast<JCharacter*>(data), dataLength);
-				JString16 utf16;
-				utf16.FromUTF8(utf8);
 				*text = utf16;
 				}
 			selMgr->DeleteData(&data, delMethod);
