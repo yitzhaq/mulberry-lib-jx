@@ -5,7 +5,7 @@
 
 	BASE CLASS = JXSelectionData
 
-	Copyright © 2002 by John Lindal. All rights reserved.
+	Copyright ï¿½ 2002 by John Lindal. All rights reserved.
 
  ******************************************************************************/
 
@@ -90,7 +90,7 @@ JXDockDragData::ConvertData
 	else if (requestType == (JXGetDockManager())->GetDNDWindowAtom())
 		{
 		*returnType   = XA_WINDOW;
-		*bitsPerBlock = 32;
+		*bitsPerBlock = sizeof(Window)*8;
 		*dataLength   = sizeof(Window);
 		*data         = new unsigned char[ *dataLength ];
 		if (*data != NULL)

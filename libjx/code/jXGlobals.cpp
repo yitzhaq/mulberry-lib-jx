@@ -812,11 +812,22 @@ JXInitLocale()
 		}
 	else
 		{
-		theLatinCharacterSetIndex = 0;
-		return;
+		theLatinCharacterSetIndex = 1;
 		}
 
 	// extract file name from Compose.dir
+	//
+	// The compose scanner only handles single-byte output characters
+	// (octal escapes like "\351"), so for UTF-8 locales we look up the
+	// ISO-8859-1 compose file which uses that format.
+
+	JString composeLookupName = langName;
+	JIndex utf8SuffixIndex;
+	if (composeLookupName.LocateLastSubstring(".UTF-8", &utf8SuffixIndex))
+		{
+		composeLookupName.ReplaceSubstring(
+			utf8SuffixIndex, composeLookupName.GetLength(), ".ISO8859-1");
+		}
 
 	ifstream composeDirInput;
 	if (!JXOpenLocaleFile("compose.dir", composeDirInput))
@@ -842,9 +853,9 @@ JXInitLocale()
 			// We have to strip that off if present
 			if (composeFile.GetLength() && (composeFile.GetLastCharacter() == ':'))
 				composeFile.SetCharacter(composeFile.GetLength(), 0);
-			//cout << "compose: " << composeFile << " : " << name << endl;
-			if (JStringCompare(name, langName, kJFalse) == 0)
+			if (JStringCompare(name, composeLookupName, kJFalse) == 0)
 				{
+				found = kJTrue;
 				break;
 				}
 			}

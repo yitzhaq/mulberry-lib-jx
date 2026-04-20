@@ -1746,8 +1746,8 @@ JXTEBase16::GetSelectionData
 							&textReturnType, &data, &dataLength, &delMethod))
 			{
 			// Check UTF8_STRING first - if we requested it, use UTF-8 decoding
-			if (textType == selMgr->GetUTF8StringXAtom() ||
-				textReturnType == selMgr->GetUTF8StringXAtom())
+			// But only if we actually got UTF-8 data back
+			if (textReturnType == selMgr->GetUTF8StringXAtom())
 				{
 				gotData = kJTrue;
 				JString utf8(reinterpret_cast<JCharacter*>(data), dataLength);

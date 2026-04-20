@@ -98,8 +98,8 @@ LINKER := g++
 CC       := gcc
 CXX      := g++
 CPPFLAGS  = ${DEPENDFLAGS} -Wno-deprecated
-CFLAGS    = ${J_MAKE_NEEDS_OUTPUT_ARG}
-CXXFLAGS  = ${J_MAKE_NEEDS_OUTPUT_ARG}
+CFLAGS    = ${J_MAKE_NEEDS_OUTPUT_ARG} -fstack-clash-protection
+CXXFLAGS  = ${J_MAKE_NEEDS_OUTPUT_ARG} -fstack-clash-protection
 
 # libraries to link
 

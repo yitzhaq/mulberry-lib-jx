@@ -12,7 +12,7 @@
 
 	BASE CLASS = virtual JBroadcaster
 
-	Copyright © 1996-99 by John Lindal. All rights reserved.
+	Copyright ï¿½ 1996-99 by John Lindal. All rights reserved.
 
  ******************************************************************************/
 
@@ -700,7 +700,7 @@ JXSelectionManager::SendData1
 	)
 {
 	XChangeProperty(*itsDisplay, requestor, property, type,
-					bitsPerBlock, PropModeReplace, data,
+					(bitsPerBlock > 32 ? 32 : bitsPerBlock), PropModeReplace, data,
 					dataLength/(bitsPerBlock/8));
 
 	itsReceivedAllocErrorFlag  = kJFalse;
