@@ -3,7 +3,7 @@
 
 	Interface for the JXTextMenuData class
 
-	Copyright © 1996 by John Lindal. All rights reserved.
+	Copyright ï¿½ 1996 by John Lindal. All rights reserved.
 
  ******************************************************************************/
 
@@ -65,7 +65,7 @@ public:
 
 	const JCharacter*	GetFontName(const JIndex index) const;
 	JSize				GetFontSize(const JIndex index) const;
-	const JFontStyle&	GetFontStyle(const JIndex index) const;
+	JFontStyle			GetFontStyle(const JIndex index) const;
 	void				GetFont(const JIndex index, JString* name,
 								JSize* size, JFontStyle* style) const;
 	void				GetFont(const JIndex index, JFontID* id,
@@ -315,7 +315,7 @@ JXTextMenuData::GetFontSize
 	return itemData.fontSize;
 }
 
-inline const JFontStyle&
+inline JFontStyle
 JXTextMenuData::GetFontStyle
 	(
 	const JIndex index

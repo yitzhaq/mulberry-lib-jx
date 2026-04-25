@@ -3,7 +3,7 @@
 
 	Useful functions for dealing with streams.
 
-	Copyright © 1994 by John Lindal. All rights reserved.
+	Copyright ï¿½ 1994 by John Lindal. All rights reserved.
 
  ******************************************************************************/
 
@@ -731,8 +731,9 @@ JIgnoreUntil
 		*foundDelimiter = kJFalse;
 		}
 
-	char* window = new char[ delimLength ];
+	char* window = new char[ delimLength + 1 ];
 	assert( window != NULL );
+	window[ delimLength ] = '\0';
 
 	size_t dataLength;
 	ssize_t result = jReadN(input, window, delimLength, &dataLength);
