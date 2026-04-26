@@ -3,7 +3,7 @@
 
 	Routines to augment time.c
 
-	Copyright © 1995 John Lindal. All rights reserved.
+	Copyright ï¿½ 1995 John Lindal. All rights reserved.
 
  ******************************************************************************/
 
@@ -81,7 +81,7 @@ JCheckExpirationDate
 		}
 	else if (t > expireTime - 14*24*3600)
 		{
-		JCharacter date[100];
+		static JCharacter date[100];
 		strftime(date, 100, "%B %e, %Y", localtime(&expireTime));
 		map[1] = date;
 		const JString msg = JGetString(kWarnExpireID, map, size);

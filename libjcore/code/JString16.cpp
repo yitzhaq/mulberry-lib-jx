@@ -257,15 +257,17 @@ JString16::CopyToPrivateString
 		JCharacter16* newString = new JCharacter16 [ itsAllocLength + 1 ];
 		assert( newString != NULL );
 
-		// now it's safe to throw out the old data
+		// copy before freeing in case str points into itsString
+
+		memcpy(newString, str, length * sizeof(JCharacter16));
 
 		delete [] itsString;
 		itsString = newString;
 		}
-
-	// copy the characters to the new string
-
-	memcpy(itsString, str, length * sizeof(JCharacter16));
+	else
+		{
+		memcpy(itsString, str, length * sizeof(JCharacter16));
+		}
 	itsString[ length ] = '\0';
 
 	itsStringLength = length;

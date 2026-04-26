@@ -15,7 +15,7 @@
 
 	BASE CLASS = JImage, virtual JBroadcaster
 
-	Copyright © 1996-98 by John Lindal. All rights reserved.
+	Copyright ï¿½ 1996-98 by John Lindal. All rights reserved.
 
  ******************************************************************************/
 
@@ -177,9 +177,9 @@ JXImage::JXImageFromDrawable
 
 		const JCoordinate w = GetWidth();
 		const JCoordinate h = GetHeight();
-		for (JCoordinate y=0; y<=h; y++)
+		for (JCoordinate y=0; y<h; y++)
 			{
-			for (JCoordinate x=0; x<=w; x++)
+			for (JCoordinate x=0; x<w; x++)
 				{
 				JColorIndex color;
 				const unsigned long xPixel = XGetPixel(itsImage, x,y);
@@ -212,9 +212,9 @@ JXImage::JXImageFromDrawable
 
 		const JCoordinate w = GetWidth();
 		const JCoordinate h = GetHeight();
-		for (JCoordinate y=0; y<=h; y++)
+		for (JCoordinate y=0; y<h; y++)
 			{
-			for (JCoordinate x=0; x<=w; x++)
+			for (JCoordinate x=0; x<w; x++)
 				{
 				const unsigned long xPixel = XGetPixel(itsImage, x,y);
 				assert( xPixel < maxColorCount );
