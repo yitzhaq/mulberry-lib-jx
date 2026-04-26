@@ -81,7 +81,7 @@ endif
 # fix this
 pipes ?= 1
 
-CFLAGS  += -W -Wall -Wpointer-arith
+CFLAGS  += -W -Wall -Wpointer-arith -Wno-deprecated-copy -Wno-catch-value
 ifeq ($(threads),1)
     CPPFLAGS  += -D_REENTRANT $(PLATFORM_AIO_SUPPORT)
 endif # threads

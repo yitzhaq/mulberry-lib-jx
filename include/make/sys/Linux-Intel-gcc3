@@ -83,7 +83,7 @@ J_RAW_SYSTEM_STUFF := \
   -DSIZEOF_LONG=4 -DSIZEOF_INT=4 \
   -D_LOOSE_KERNEL_NAMES \
   -D_XOPEN_SOURCE -D_XOPEN_SOURCE_EXTENDED \
-  -D_BSD_SOURCE -D_GNU_SOURCE
+  -D_DEFAULT_SOURCE -D_GNU_SOURCE
 
 #
 # Nothing below this line should ever need to be changed.
