@@ -6,8 +6,6 @@
 JX_ROOT := ..
 
 JCOREDIR := ./code
-PCREDIR  := ${JX_ROOT}/misc/pcre
-REGEXDIR := ${JX_ROOT}/misc/regex
 GDDIR    := ${JX_ROOT}/misc/gd
 
 # Directories to search for header files
@@ -57,7 +55,7 @@ endif
 #####
 
 LIB_NAME_ROOT := libjcore-${JX_LIB_VERSION}
-OTHER_DEPS    := regex
+OTHER_DEPS    :=
 
 ifdef J_HAS_GD
   OTHER_DEPS += gd
@@ -68,8 +66,6 @@ include ${JX_ROOT}/include/make/default_lib_target
 .PHONY : Makefiles
 Makefiles:
 	@cd test; makemake; ${MAKE} Makefiles
-	@cd ${PCREDIR}; \
-     if ! test -e Makefile; then ./configure; fi;
 
 #
 # string data
@@ -100,13 +96,6 @@ clean::
 #
 # libraries we have eaten
 #
-
-.PHONY : regex
-regex:
-	@cd ${REGEXDIR}; ${MAKE} for_jcore
-	@cd ${PCREDIR}; \
-     if ! test -e Makefile; then ./configure; fi; \
-     ${MAKE}
 
 .PHONY : gd
 gd:
