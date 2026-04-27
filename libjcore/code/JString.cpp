@@ -20,7 +20,7 @@
 
 	BASE CLASS = none
 
-	Copyright © 1994-98 by John Lindal. All rights reserved.
+	Copyright ï¿½ 1994-98 by John Lindal. All rights reserved.
 
  ******************************************************************************/
 
@@ -253,22 +253,20 @@ JString::CopyToPrivateString
 		{
 		itsAllocLength = length + itsBlockSize;
 
-		// We allocate the new memory first.
-		// If new fails, we still have the old string data.
-
 		JCharacter* newString = new JCharacter [ itsAllocLength + 1 ];
 		assert( newString != NULL );
 
-		// now it's safe to throw out the old data
+		memcpy(newString, str, length);
+		newString[ length ] = '\0';
 
 		delete [] itsString;
 		itsString = newString;
 		}
-
-	// copy the characters to the new string
-
-	memcpy(itsString, str, length);
-	itsString[ length ] = '\0';
+	else
+		{
+		memcpy(itsString, str, length);
+		itsString[ length ] = '\0';
+		}
 
 	itsStringLength = length;
 }
@@ -306,43 +304,29 @@ JString::InsertSubstring
 		{
 		itsAllocLength = itsStringLength + insertLength + itsBlockSize;
 
-		// allocate space for the combined string
-
 		JCharacter* newString = new JCharacter [ itsAllocLength + 1 ];
 		assert( newString != NULL );
 
 		insertionPtr = newString + insertionOffset;
 
-		// copy our characters in front of the insertion point
-
 		memcpy(newString, itsString, insertionOffset);
-
-		// copy our characters after the insertion point, -including the termination-
-
+		memcpy(insertionPtr, stringToInsert, insertLength);
 		memcpy(insertionPtr + insertLength, itsString + insertionOffset,
 			   itsStringLength - insertionOffset + 1);
-
-		// throw out our original string and save the new one
 
 		delete [] itsString;
 		itsString = newString;
 		}
 
-	// Otherwise, just shift characters to make space for the result.
-
 	else
 		{
 		insertionPtr = itsString + insertionOffset;
 
-		// shift characters after the insertion point, -including the termination-
-
 		memmove(insertionPtr + insertLength, insertionPtr,
 				itsStringLength - insertionOffset + 1);
+
+		memcpy(insertionPtr, stringToInsert, insertLength);
 		}
-
-	// copy the characters from the string to insert
-
-	memcpy(insertionPtr, stringToInsert, insertLength);
 
 	// update our string length
 
@@ -923,36 +907,24 @@ JString::ReplaceSubstring
 		{
 		itsAllocLength = newLength + itsBlockSize;
 
-		// allocate space for the result
-
 		JCharacter* newString = new JCharacter[ itsAllocLength+1 ];
 		assert( newString != NULL );
 
-		// place the characters in front and behind
-
 		memcpy(newString, itsString, len1);
+		memcpy(newString + len1, str, len2);
 		memcpy(newString + len1 + len2, itsString + lastCharIndex, len3);
-
-		// throw out the original string and save the new one
+		newString[ newLength ] = '\0';
 
 		delete [] itsString;
 		itsString = newString;
 		}
 
-	// Otherwise, shift characters to make space.
-
 	else
 		{
 		memmove(itsString + len1 + len2, itsString + lastCharIndex, len3);
+		memcpy(itsString + len1, str, len2);
+		itsString[ newLength ] = '\0';
 		}
-
-	// insert the new characters
-
-	memcpy(itsString + len1, str, len2);
-
-	// terminate
-
-	itsString[ newLength ] = '\0';
 
 	itsStringLength = newLength;
 }
@@ -1991,7 +1963,7 @@ JAppendChar(char s1[], char c)
 
 	Assembled routines for dealing with string<->number conversion.
 
-	Copyright © 1992 John Lindal. All rights reserved.
+	Copyright ï¿½ 1992 John Lindal. All rights reserved.
 
  -----------------------------------------------------------------------------*/
 
@@ -2478,7 +2450,7 @@ JBoolean	neg,valid;
 	Assembled routines for dealing with string conversion.
 	These routines only require vanilla C.
 
-	Copyright © 1992 John Lindal. All rights reserved.
+	Copyright ï¿½ 1992 John Lindal. All rights reserved.
 
  -----------------------------------------------------------------------------*/
 

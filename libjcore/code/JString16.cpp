@@ -306,43 +306,29 @@ JString16::InsertSubstring
 		{
 		itsAllocLength = itsStringLength + insertLength + itsBlockSize;
 
-		// allocate space for the combined string
-
 		JCharacter16* newString = new JCharacter16 [ itsAllocLength + 1 ];
 		assert( newString != NULL );
 
 		insertionPtr = newString + insertionOffset;
 
-		// copy our characters in front of the insertion point
-
 		memcpy(newString, itsString, insertionOffset * sizeof(JCharacter16));
-
-		// copy our characters after the insertion point, -including the termination-
-
+		memcpy(insertionPtr, stringToInsert, insertLength * sizeof(JCharacter16));
 		memcpy(insertionPtr + insertLength, itsString + insertionOffset,
 			   (itsStringLength - insertionOffset + 1) * sizeof(JCharacter16));
-
-		// throw out our original string and save the new one
 
 		delete [] itsString;
 		itsString = newString;
 		}
 
-	// Otherwise, just shift characters to make space for the result.
-
 	else
 		{
 		insertionPtr = itsString + insertionOffset;
 
-		// shift characters after the insertion point, -including the termination-
-
 		memmove(insertionPtr + insertLength, insertionPtr,
 				(itsStringLength - insertionOffset + 1) * sizeof(JCharacter16));
+
+		memcpy(insertionPtr, stringToInsert, insertLength * sizeof(JCharacter16));
 		}
-
-	// copy the characters from the string to insert
-
-	memcpy(insertionPtr, stringToInsert, insertLength * sizeof(JCharacter16));
 
 	// update our string length
 
@@ -1107,36 +1093,24 @@ JString16::ReplaceSubstring
 		{
 		itsAllocLength = newLength + itsBlockSize;
 
-		// allocate space for the result
-
 		JCharacter16* newString = new JCharacter16[ itsAllocLength+1 ];
 		assert( newString != NULL );
 
-		// place the characters in front and behind
-
 		memcpy(newString, itsString, len1 * sizeof(JCharacter16));
+		memcpy(newString + len1, str, len2 * sizeof(JCharacter16));
 		memcpy(newString + len1 + len2, itsString + lastCharIndex, len3 * sizeof(JCharacter16));
-
-		// throw out the original string and save the new one
+		newString[ newLength ] = '\0';
 
 		delete [] itsString;
 		itsString = newString;
 		}
 
-	// Otherwise, shift characters to make space.
-
 	else
 		{
 		memmove(itsString + len1 + len2, itsString + lastCharIndex, len3 * sizeof(JCharacter16));
+		memcpy(itsString + len1, str, len2 * sizeof(JCharacter16));
+		itsString[ newLength ] = '\0';
 		}
-
-	// insert the new characters
-
-	memcpy(itsString + len1, str, len2 * sizeof(JCharacter16));
-
-	// terminate
-
-	itsString[ newLength ] = '\0';
 
 	itsStringLength = newLength;
 }
