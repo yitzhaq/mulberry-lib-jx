@@ -198,8 +198,8 @@ ACE_Thread_ID::to_string (char *thr_string)
 bool
 ACE_Thread_ID::operator== (const ACE_Thread_ID &rhs) const
 {
-  return ACE_OS::thr_cmp (this->thread_handle_, rhs.thread_handle_) == 0
-    && ACE_OS::thr_equal (this->thread_id_, rhs.thread_id_) == 0;
+  return ACE_OS::thr_cmp (this->thread_handle_, rhs.thread_handle_) != 0
+    && ACE_OS::thr_equal (this->thread_id_, rhs.thread_id_) != 0;
 }
 
 bool
