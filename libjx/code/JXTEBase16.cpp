@@ -1745,9 +1745,12 @@ JXTEBase16::GetSelectionData
 			selMgr->GetData(selectionName, time, textType,
 							&textReturnType, &data, &dataLength, &delMethod))
 			{
-			// Check UTF8_STRING first - if we requested it, use UTF-8 decoding
-			// But only if we actually got UTF-8 data back
-			if (textReturnType == selMgr->GetUTF8StringXAtom())
+			// Decode as UTF-8 if: the owner explicitly returned UTF8_STRING,
+			// or we requested UTF8_STRING and the owner didn't explicitly
+			// return XA_STRING (Latin-1).  Handles clipboard sources that
+			// return UTF-8 data typed as text/plain for a UTF8_STRING request.
+			if (textReturnType == selMgr->GetUTF8StringXAtom() ||
+				(textType == selMgr->GetUTF8StringXAtom() && textReturnType != XA_STRING))
 				{
 				gotData = kJTrue;
 				JString utf8(reinterpret_cast<JCharacter*>(data), dataLength);
