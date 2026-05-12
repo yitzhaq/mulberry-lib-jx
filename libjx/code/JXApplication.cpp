@@ -11,7 +11,7 @@
 
 	BASE CLASS = JXDirector
 
-	Copyright © 1996-97 by John Lindal. All rights reserved.
+	Copyright ï¿½ 1996-97 by John Lindal. All rights reserved.
 
  ******************************************************************************/
 
@@ -730,6 +730,14 @@ JXApplication::HandleOneEventForWindow
 			PerformIdleTasks();
 			itsLastIdleTime = itsCurrentTime;
 			PerformUrgentTasks();
+
+			// Flush pending display updates from idle tasks before sleeping
+			{
+			const JSize dcount = itsDisplayList->GetElementCount();
+			for (JIndex di=1; di<=dcount; di++)
+				itsDisplayList->NthElement(di)->Update();
+			}
+
 			if (allowSleep)
 				{
 				JWait(itsMaxSleepTime / 1000.0);
@@ -742,6 +750,13 @@ JXApplication::HandleOneEventForWindow
 			PerformIdleTasks();
 			itsLastIdleTime = itsCurrentTime;
 			PerformUrgentTasks();
+
+			// Flush pending display updates from idle tasks
+			{
+			const JSize dcount = itsDisplayList->GetElementCount();
+			for (JIndex di=1; di<=dcount; di++)
+				itsDisplayList->NthElement(di)->Update();
+			}
 			}
 		else
 			{
