@@ -150,6 +150,18 @@ JXSelectionManager::GetAvailableTypes
 		return kJTrue;
 		}
 
+	// SetData() stores clipboard data under PRIMARY and auto-claims CLIPBOARD.
+	// If we own CLIPBOARD but data is stored under PRIMARY, return that data
+	// directly to avoid a deadlocked RequestData round-trip to ourselves.
+
+	if (selectionName == itsGnomeClipboardName &&
+		XGetSelectionOwner(*itsDisplay, itsGnomeClipboardName) == itsDataWindow &&
+		GetData(kJXClipboardName, time, &data))
+		{
+		*typeList = data->GetTypeList();
+		return kJTrue;
+		}
+
 	// We have to go via the X server.
 
 	typeList->RemoveAll();
@@ -190,8 +202,8 @@ JXSelectionManager::GetAvailableTypes
 			}
 		}
 
-	if (selectionName == kJXClipboardName &&
-		XGetSelectionOwner(*itsDisplay, kJXClipboardName) != None)
+	if ((selectionName == kJXClipboardName || selectionName == itsGnomeClipboardName) &&
+		XGetSelectionOwner(*itsDisplay, selectionName) != None)
 		{
 		// compensate for brain damage in rxvt, etc.
 
@@ -199,6 +211,7 @@ JXSelectionManager::GetAvailableTypes
 //		cout << "XA_SECONDARY owner: " << XGetSelectionOwner(*itsDisplay, XA_SECONDARY) << endl;
 //		cout << "CLIPBOARD owner: " << XGetSelectionOwner(*itsDisplay, XInternAtom(*itsDisplay, "CLIPBOARD", False)) << endl;
 
+		typeList->AppendElement(itsUTF8StringXAtom);
 		typeList->AppendElement(XA_STRING);
 		return kJTrue;
 		}
@@ -234,7 +247,10 @@ JXSelectionManager::GetData
 
 	JXSelectionData* localData = NULL;
 	JSize bitsPerBlock;
-	if (GetData(selectionName, time, &localData))
+	if (GetData(selectionName, time, &localData) ||
+		(selectionName == itsGnomeClipboardName &&
+		 XGetSelectionOwner(*itsDisplay, itsGnomeClipboardName) == itsDataWindow &&
+		 GetData(kJXClipboardName, time, &localData)))
 		{
 		if (localData->Convert(requestType, returnType,
 							   data, dataLength, &bitsPerBlock))

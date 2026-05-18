@@ -1,7 +1,7 @@
 /******************************************************************************
  JXSelectionManager.h
 
-	Copyright © 1996-99 by John Lindal. All rights reserved.
+	Copyright ï¿½ 1996-99 by John Lindal. All rights reserved.
 
  ******************************************************************************/
 
@@ -60,6 +60,8 @@ public:
 	Atom	GetMultipleXAtom() const;
 	Atom	GetMimePlainTextXAtom() const;
 	Atom	GetURLXAtom() const;
+
+	Atom	GetGnomeClipboardName() const;
 
 	Atom	GetDeleteSelectionXAtom() const;
 	Atom	GetNULLXAtom() const;
@@ -194,6 +196,13 @@ JXSelectionManager::GetURLXAtom()
 	const
 {
 	return itsURLXAtom;
+}
+
+inline Atom
+JXSelectionManager::GetGnomeClipboardName()
+	const
+{
+	return itsGnomeClipboardName;
 }
 
 inline Atom

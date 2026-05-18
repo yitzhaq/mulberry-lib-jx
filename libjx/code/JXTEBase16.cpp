@@ -1762,9 +1762,39 @@ JXTEBase16::GetSelectionData
 				textReturnType == selMgr->GetMimePlainTextXAtom())
 				{
 				gotData = kJTrue;
-				JString ascii(reinterpret_cast<JCharacter*>(data), dataLength);
+				JString s(reinterpret_cast<JCharacter*>(data), dataLength);
 				JString16 utf16;
-				utf16.FromASCII(ascii);
+
+				// XA_STRING is nominally Latin-1, but many apps put UTF-8 in it.
+				// Detect UTF-8 by checking for valid multi-byte sequences.
+				bool hasHighBytes = false;
+				bool validUTF8 = true;
+				const unsigned char* p = data;
+				JSize i = 0;
+				while (i < dataLength)
+				{
+					if (p[i] >= 0x80)
+					{
+						hasHighBytes = true;
+						unsigned int expect = 0;
+						if ((p[i] & 0xE0) == 0xC0) expect = 1;
+						else if ((p[i] & 0xF0) == 0xE0) expect = 2;
+						else if ((p[i] & 0xF8) == 0xF0) expect = 3;
+						else { validUTF8 = false; break; }
+						for (unsigned int j = 0; j < expect; j++)
+						{
+							if (++i >= dataLength || (p[i] & 0xC0) != 0x80)
+							{ validUTF8 = false; break; }
+						}
+						if (!validUTF8) break;
+					}
+					i++;
+				}
+
+				if (hasHighBytes && validUTF8)
+					utf16.FromUTF8(s);
+				else
+					utf16.FromASCII(s);
 				*text = utf16;
 				}
 			selMgr->DeleteData(&data, delMethod);
