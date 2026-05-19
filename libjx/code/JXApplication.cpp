@@ -528,6 +528,14 @@ JXApplication::HandleOneEvent()
 		PerformIdleTasks();
 		itsLastIdleTime = itsCurrentTime;
 		PerformUrgentTasks();
+
+		// Flush pending display updates from idle tasks before sleeping
+		{
+		const JSize dcount = itsDisplayList->GetElementCount();
+		for (JIndex di=1; di<=dcount; di++)
+			itsDisplayList->NthElement(di)->Update();
+		}
+
 		if (allowSleep)
 			{
 			JWait(itsMaxSleepTime / 1000.0);
@@ -540,6 +548,13 @@ JXApplication::HandleOneEvent()
 		PerformIdleTasks();
 		itsLastIdleTime = itsCurrentTime;
 		PerformUrgentTasks();
+
+		// Flush pending display updates from idle tasks
+		{
+		const JSize dcount = itsDisplayList->GetElementCount();
+		for (JIndex di=1; di<=dcount; di++)
+			itsDisplayList->NthElement(di)->Update();
+		}
 		}
 	else
 		{
