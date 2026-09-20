@@ -38,7 +38,8 @@ Makefiles:
 #
 
 .PHONY : install
-install: install1 install2
+install: install1
+	@${MAKE} install2
 
 .PHONY: install1
 install1:
