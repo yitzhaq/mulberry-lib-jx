@@ -171,7 +171,7 @@ CREATE_ACE_MACROS = \
 .PHONY : linux_intel
 linux_intel: linux_common
 	@ln -s sys/Linux-Intel-gcc3  include/make/jx_config
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # RedHat 8.x, 9.x, Fedora (gcc 3.x)
@@ -180,7 +180,7 @@ linux_intel: linux_common
 .PHONY : linux_intel_x86_64
 linux_intel_x86_64: linux_common
 	@ln -s sys/Linux-Intel-x86-64-gcc3  include/make/jx_config
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # 64-bit RedHat 5.x
@@ -189,7 +189,7 @@ linux_intel_x86_64: linux_common
 .PHONY : linux_intel-64
 linux_intel-64: linux_common
 	@ln -s sys/Linux-Alpha-gcc3  include/make/jx_config
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # RedHat 5.x with KAI C++
@@ -204,7 +204,7 @@ redhat5_x-kcc: prep
 	@${TEST_ACE_CONFIG} config-linux-kcc.h ${CREATE_ACE_CONFIG}
 	@${TEST_ACE_MACROS} platform_linux_kcc.GNU ${CREATE_ACE_MACROS}
 
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # Debian
@@ -219,7 +219,7 @@ debian2_x: redhat5.x
 .PHONY : debian3_1
 debian3_1: linux_common
 	@ln -s sys/Linux-Intel-Debian3.1  include/make/jx_config
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # SuSE
@@ -228,7 +228,7 @@ debian3_1: linux_common
 .PHONY : suse5_x
 suse5_x: linux_common
 	@ln -s sys/Linux-Intel-SuSE5.x  include/make/jx_config
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # Slackware
@@ -244,7 +244,7 @@ slackware: suse5_x
 .PHONY : openlinux2_2
 openlinux2_2: linux_common
 	@ln -s sys/Linux-Intel-OpenLinux2.2  include/make/jx_config
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # Corel Linux 1.x
@@ -253,7 +253,7 @@ openlinux2_2: linux_common
 .PHONY : corel1_x
 corel1_x: linux_common
 	@ln -s sys/Linux-Intel-Corel1.0  include/make/jx_config
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # LinuxPPC r4
@@ -266,7 +266,7 @@ linuxppc4:
            include/jcore/jMissingProto.h
 	@${TEST_ACE_CONFIG} config-linuxppc4.h ${CREATE_ACE_CONFIG}
 	@${TEST_ACE_MACROS} platform_linux.GNU ${CREATE_ACE_MACROS}
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # LinuxPPC r5
@@ -275,7 +275,7 @@ linuxppc4:
 .PHONY : linuxppc5
 linuxppc5: linux_common
 	@ln -s sys/LinuxPPC_5  include/make/jx_config
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # MkLinux
@@ -288,7 +288,7 @@ mklinux: linux_common
            include/jcore/jMissingProto.h
 	@${TEST_ACE_CONFIG} config-mklinux.h ${CREATE_ACE_CONFIG}
 	@${TEST_ACE_MACROS} platform_linux.GNU ${CREATE_ACE_MACROS}
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # Linux shared code
@@ -313,7 +313,7 @@ cygwin32: prep
            include/jcore/jMissingProto.h
 	@${TEST_ACE_CONFIG} config-cygwin32.h ${CREATE_ACE_CONFIG}
 	@${TEST_ACE_MACROS} platform_cygwin32.GNU ${CREATE_ACE_MACROS}
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # FreeBSD
@@ -327,7 +327,7 @@ freebsd2_x: prep
            include/jcore/jMissingProto.h
 	@${TEST_ACE_CONFIG} config-freebsd.h ${CREATE_ACE_CONFIG}
 	@${TEST_ACE_MACROS} platform_freebsd.GNU ${CREATE_ACE_MACROS}
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 .PHONY : freebsd3_x
 freebsd3_x: prep
@@ -337,7 +337,7 @@ freebsd3_x: prep
            include/jcore/jMissingProto.h
 	@${TEST_ACE_CONFIG} config-freebsd-pthread.h ${CREATE_ACE_CONFIG}
 	@${TEST_ACE_MACROS} platform_freebsd_pthread.GNU ${CREATE_ACE_MACROS}
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # OpenBSD
@@ -351,7 +351,7 @@ openbsd2_x: prep
            include/jcore/jMissingProto.h
 	@${TEST_ACE_CONFIG} config-openbsd.h ${CREATE_ACE_CONFIG}
 	@${TEST_ACE_MACROS} platform_openbsd.GNU ${CREATE_ACE_MACROS}
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # OS X
@@ -365,7 +365,7 @@ OSX: prep
            include/jcore/jMissingProto.h
 	@${TEST_ACE_CONFIG} config-macosx-panther.h ${CREATE_ACE_CONFIG}
 	@${TEST_ACE_MACROS} platform_macosx_panther.GNU ${CREATE_ACE_MACROS}
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # SunOS 4.x
@@ -379,7 +379,7 @@ sunos4-g++: prep
            include/jcore/jMissingProto.h
 	@${TEST_ACE_CONFIG} config-sunos4-g++.h ${CREATE_ACE_CONFIG}
 	@${TEST_ACE_MACROS} platform_sunos4_g++.GNU ${CREATE_ACE_MACROS}
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # SunOS 5.4 (Solaris 2.4)
@@ -393,7 +393,7 @@ sunos5_4-g++: prep
            include/jcore/jMissingProto.h
 	@${TEST_ACE_CONFIG} config-sunos5.4-g++.h ${CREATE_ACE_CONFIG}
 	@${TEST_ACE_MACROS} platform_sunos5_g++.GNU ${CREATE_ACE_MACROS}
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # SunOS 5.5 (Solaris 2.5)
@@ -407,7 +407,7 @@ sunos5_5-g++: prep
            include/jcore/jMissingProto.h
 	@${TEST_ACE_CONFIG} config-sunos5.5.h ${CREATE_ACE_CONFIG}
 	@${TEST_ACE_MACROS} platform_sunos5_g++.GNU ${CREATE_ACE_MACROS}
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # SunOS 5.6 (Solaris 2.6)
@@ -421,7 +421,7 @@ sunos5_6-g++: prep
            include/jcore/jMissingProto.h
 	@${TEST_ACE_CONFIG} config-sunos5.6.h ${CREATE_ACE_CONFIG}
 	@${TEST_ACE_MACROS} platform_sunos5_g++.GNU ${CREATE_ACE_MACROS}
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # SunOS 5.7 (Solaris 7)
@@ -435,7 +435,7 @@ sunos5_7-g++: prep
            include/jcore/jMissingProto.h
 	@${TEST_ACE_CONFIG} config-sunos5.7.h ${CREATE_ACE_CONFIG}
 	@${TEST_ACE_MACROS} platform_sunos5_g++.GNU ${CREATE_ACE_MACROS}
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # SunOS 5.8 (Solaris 8)
@@ -449,7 +449,7 @@ sunos5_8-g++: prep
            include/jcore/jMissingProto.h
 	@${TEST_ACE_CONFIG} config-sunos5.8.h ${CREATE_ACE_CONFIG}
 	@${TEST_ACE_MACROS} platform_sunos5_g++.GNU ${CREATE_ACE_MACROS}
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # SunOS 5.9 (Solaris 9)
@@ -463,7 +463,7 @@ sunos5_9-g++: prep
            include/jcore/jMissingProto.h
 	@${TEST_ACE_CONFIG} config-sunos5.9.h ${CREATE_ACE_CONFIG}
 	@${TEST_ACE_MACROS} platform_sunos5_g++.GNU ${CREATE_ACE_MACROS}
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # HP-UX 10
@@ -477,7 +477,7 @@ hpux10-g++: prep
            include/jcore/jMissingProto.h
 	@${TEST_ACE_CONFIG} config-hpux-10.x-g++.h ${CREATE_ACE_CONFIG}
 	@${TEST_ACE_MACROS} platform_hpux_gcc.GNU ${CREATE_ACE_MACROS}
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # IRIX 5.3
@@ -491,7 +491,7 @@ irix5_3-g++: prep
            include/jcore/jMissingProto.h
 	@${TEST_ACE_CONFIG} config-irix5.3-g++.h ${CREATE_ACE_CONFIG}
 	@${TEST_ACE_MACROS} platform_irix5.3_g++.GNU ${CREATE_ACE_MACROS}
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # IRIX 6.x
@@ -505,7 +505,7 @@ irix6_x-g++: prep
            include/jcore/jMissingProto.h
 	@${TEST_ACE_CONFIG} config-irix6.x-g++.h ${CREATE_ACE_CONFIG}
 	@${TEST_ACE_MACROS} platform_irix6.x_g++.GNU ${CREATE_ACE_MACROS}
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # Digital UNIX (OSF1) 4.x
@@ -519,7 +519,7 @@ osf1_4_x-g++: prep
            include/jcore/jMissingProto.h
 	@${TEST_ACE_CONFIG} config-osf1-4.0.h ${CREATE_ACE_CONFIG}
 	@${TEST_ACE_MACROS} platform_osf1_4.0_g++.GNU ${CREATE_ACE_MACROS}
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # AIX 4.x
@@ -533,7 +533,7 @@ aix4_x-g++: prep
            include/jcore/jMissingProto.h
 	@${TEST_ACE_CONFIG} config-aix-4.x.h ${CREATE_ACE_CONFIG}
 	@${TEST_ACE_MACROS} platform_aix4_g++.GNU ${CREATE_ACE_MACROS}
-	@${INSTALL_CMD}
+	+@${INSTALL_CMD}
 
 #
 # shared code
@@ -609,12 +609,12 @@ clean_links:
 
 .PHONY : tidy
 tidy:
-	@cd lib; ${JMAKE} tidy
+	+@cd lib; ${JMAKE} tidy
 
 .PHONY : clean
 clean:
-	@cd lib; ${JMAKE} clean
+	+@cd lib; ${JMAKE} clean
 
 .PHONY : uninstall
 uninstall:
-	@cd lib; ${JMAKE} uninstall
+	+@cd lib; ${JMAKE} uninstall

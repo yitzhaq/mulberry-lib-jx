@@ -47,7 +47,7 @@ install1:
 	@${MAKE} Makefiles
 
 .PHONY: install2
-install2:
+install2: install1
 	@cd ../libjcore; ${MAKE} COMPILE_STRINGS=0
 	@cd ../programs/compile_jstrings; ${MAKE} jxinstall
 	@${foreach dir, \

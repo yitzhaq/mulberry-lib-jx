@@ -64,11 +64,11 @@ endif
 
 .PHONY : shared
 shared:
-	@${BEGIN_ACE_MAKE} ${ACE_MAKE_FLAGS} debug=0 shared_libs=1 static_libs=0 ${END_ACE_MAKE}
+	+@${BEGIN_ACE_MAKE} ${ACE_MAKE_FLAGS} debug=0 shared_libs=1 static_libs=0 ${END_ACE_MAKE}
 
 .PHONY : static
 static:
-	@${BEGIN_ACE_MAKE} ${ACE_DEBUG} ${ACE_MAKE_FLAGS} shared_libs=0 static_libs=1 ${END_ACE_MAKE}
+	+@${BEGIN_ACE_MAKE} ${ACE_DEBUG} ${ACE_MAKE_FLAGS} shared_libs=0 static_libs=1 ${END_ACE_MAKE}
 
 #
 # JX source distribution (DISTR_TAR_FILE)
@@ -106,13 +106,13 @@ ACE_UNINSTALL := ${RM} ${JX_LIB_ROOT}/libACE-${ACE_LIB_VERSION}.*
 
 .PHONY : tidy
 tidy::
-	@if { ! test -L ACE_wrappers; } \
+	+@if { ! test -L ACE_wrappers; } \
      then { ${ACE_TIDY}; } fi
 	@cd test; ${MAKE} tidy
 
 .PHONY : clean
 clean::
-	@if { ! test -L ACE_wrappers; } \
+	+@if { ! test -L ACE_wrappers; } \
      then { ${ACE_CLEAN}; } fi
 	@cd test; ${MAKE} clean
 
