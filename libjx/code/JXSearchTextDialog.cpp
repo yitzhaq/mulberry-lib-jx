@@ -101,7 +101,7 @@ JXSearchTextDialog::JXSearchTextDialog
 	itsRegex->SetMatchOnly(kJFalse);			// we want substring matches
 	itsRegex->SetLineBegin(kJTrue);				// ^ matches beginning of line, not text
 	itsRegex->SetLineEnd(kJTrue);				// $ matches end of line, not text
-#ifndef PCRE_MAJOR
+#ifndef PCRE2_MAJOR
 	itsRegex->SetNoJExtended(kJFalse);			// with perl extensions
 	(itsRegex->GetPatternEscapeEngine())->SetWhitespaceEscapes();
 #endif

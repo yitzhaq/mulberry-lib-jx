@@ -24,13 +24,13 @@
 class JSubstitute;
 class JInterpolate;
 
-#ifdef PCRE_MAJOR
-#define REG_ICASE	PCRE_CASELESS
-#define REG_NEWLINE	PCRE_MULTILINE
-#define REG_NOTBOL	PCRE_NOTBOL
-#define	REG_NOTEOL	PCRE_NOTEOL
+#ifdef PCRE2_MAJOR
+#define REG_ICASE	PCRE2_CASELESS
+#define REG_NEWLINE	PCRE2_MULTILINE
+#define REG_NOTBOL	PCRE2_NOTBOL
+#define	REG_NOTEOL	PCRE2_NOTEOL
 #define REG_NOSUB	0
-#define REG_NOMATCH	PCRE_ERROR_NOMATCH
+#define REG_NOMATCH	PCRE2_ERROR_NOMATCH
 #endif
 
 //#define JRE_ALLOC_CHECK
@@ -69,7 +69,7 @@ public:
 
 // Pattern-related settings and statistics
 
-#ifndef PCRE_MAJOR
+#ifndef PCRE2_MAJOR
 	void     SetNoJExtended(const JBoolean yesNo = kJTrue);
 	JBoolean IsNoJExtended() const;
 #endif
@@ -78,7 +78,7 @@ public:
 	JSize    NULLCount() const;
 
 	JSize    	GetSubCount() const;
-#ifdef PCRE_MAJOR
+#ifdef PCRE2_MAJOR
 	JBoolean	GetSubexpressionIndex(const JCharacter* name, JIndex* index) const;
 	JBoolean	GetSubexpression(const JCharacter* str, const JCharacter* name,
 								 const JArray<JIndexRange>& matchList, JString* s) const;
@@ -187,7 +187,7 @@ public:
 	// Direct access to the internal escape and match substitution engines,
 	// in case you wish to customize them.
 
-#ifndef PCRE_MAJOR
+#ifndef PCRE2_MAJOR
 	JSubstitute*  GetPatternEscapeEngine() const;
 #endif
 	JInterpolate* GetMatchInterpolator()   const;
@@ -205,8 +205,8 @@ private:
 	JString itsPattern;
 	JSize   itsNULLCount;
 
-#ifdef PCRE_MAJOR
-	pcre*	itsRegex;
+#ifdef PCRE2_MAJOR
+	pcre2_code*	itsRegex;
 #else
 	regex_t	itsRegex;
 #endif
@@ -303,7 +303,7 @@ public:
 
  *****************************************************************************/
 
-#ifndef PCRE_MAJOR
+#ifndef PCRE2_MAJOR
 
 inline JBoolean
 JRegex::IsNoJExtended() const
@@ -638,7 +638,7 @@ JRegex::GetReplacePattern() const
 
  *****************************************************************************/
 
-#ifndef PCRE_MAJOR
+#ifndef PCRE2_MAJOR
 
 inline JSubstitute*
 JRegex::GetPatternEscapeEngine() const

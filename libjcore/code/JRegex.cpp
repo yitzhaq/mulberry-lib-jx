@@ -127,7 +127,7 @@
 #include <JInterpolate.h>
 #include <jAssert.h>
 
-#ifdef PCRE_MAJOR
+#ifdef PCRE2_MAJOR
 
 struct regmatch_t
 {
@@ -141,8 +141,8 @@ struct regmatch_t
 	const JCharacter* JRegex::kError = "Error::JRegex";
 
 	// Constant static data (i.e. ordinary file scope constants)
-#ifdef PCRE_MAJOR
-	static const int defaultCFlags = PCRE_MULTILINE;
+#ifdef PCRE2_MAJOR
+	static const int defaultCFlags = PCRE2_MULTILINE;
 	static const int defaultEFlags = 0;
 #else
 	// WARNING: JRegex assumes that REG_PEND and REG_STARTEND are *always*
@@ -168,7 +168,7 @@ JRegex::JRegex()
 	:
 	itsPattern(),
 	itsNULLCount(0),
-#ifdef PCRE_MAJOR
+#ifdef PCRE2_MAJOR
 	itsRegex(NULL),
 #else
 //	itsRegex(), // It's Spencer's struct, we don't know the fields
@@ -195,7 +195,7 @@ JRegex::JRegex
 	:
 	itsPattern(),
 	itsNULLCount(0),
-#ifdef PCRE_MAJOR
+#ifdef PCRE2_MAJOR
 	itsRegex(NULL),
 #else
 //	itsRegex(), // It's Spencer's struct, we don't know the fields
@@ -224,7 +224,7 @@ JRegex::JRegex
 	:
 	itsPattern(),
 	itsNULLCount(0),
-#ifdef PCRE_MAJOR
+#ifdef PCRE2_MAJOR
 	itsRegex(NULL),
 #else
 //	itsRegex(), // It's Spencer's struct, we don't know the fields
@@ -252,7 +252,7 @@ JRegex::JRegex
 	:
 	itsPattern(),
 	itsNULLCount( static_cast<JSize>(-1) ), // Garbage, will be recalculated by SetPattern
-#ifdef PCRE_MAJOR
+#ifdef PCRE2_MAJOR
 	itsRegex(NULL),
 #else
 //	itsRegex(), // It's Spencer's struct, we don't know the fields
@@ -281,7 +281,7 @@ JRegex::Allocate()
 	assert(itsReplacePattern != NULL);
 
 	// itsInterpolator is not created until needed
-#ifndef PCRE_MAJOR
+#ifndef PCRE2_MAJOR
 	itsEscapeEngine = new JSubstitute;
 	assert(itsEscapeEngine != NULL);
 	itsEscapeEngine->SetPureEscapeEngine();
@@ -485,7 +485,7 @@ JRegex::SetPatternOrDie
 
  *****************************************************************************/
 
-#ifndef PCRE_MAJOR
+#ifndef PCRE2_MAJOR
 
 void
 JRegex::SetNoJExtended
@@ -518,7 +518,7 @@ JRegex::SetNoJExtended
 JSize
 JRegex::GetSubCount() const
 {
-#ifdef PCRE_MAJOR
+#ifdef PCRE2_MAJOR
 
 	if (itsRegex == NULL)
 		{
@@ -526,8 +526,8 @@ JRegex::GetSubCount() const
 		}
 	else
 		{
-		int count;
-		const int result = pcre_fullinfo(itsRegex, NULL, PCRE_INFO_CAPTURECOUNT, &count);
+		uint32_t count;
+		const int result = pcre2_pattern_info(itsRegex, PCRE2_INFO_CAPTURECOUNT, &count);
 		assert( result == 0 );
 		return count;
 		}
@@ -1213,7 +1213,7 @@ JRegex::MatchBackward
 	return numFound; // We succeeded, and *matchList contains what we found
 }
 
-#ifdef PCRE_MAJOR
+#ifdef PCRE2_MAJOR
 
 /******************************************************************************
  GetSubexpressionIndex
@@ -1230,7 +1230,7 @@ JRegex::GetSubexpressionIndex
 {
 	if (itsRegex != NULL)
 		{
-		const int i = pcre_get_stringnumber(itsRegex, name);
+		const int i = pcre2_substring_number_from_name(itsRegex, (PCRE2_SPTR) name);
 		if (i > 0)
 			{
 			*index = i+1;	// first subexpression is index 2
@@ -1357,7 +1357,7 @@ JRegex::InterpolateMatches
 	JString replaceString = *itsReplacePattern;
 
 	JInterpolate* interpolator = GetMatchInterpolator();
-#ifdef PCRE_MAJOR
+#ifdef PCRE2_MAJOR
 	interpolator->SetMatchResults(sourceString, itsRegex, &matchList);
 #else
 	interpolator->SetMatchResults(sourceString, &matchList);
@@ -1618,7 +1618,7 @@ JRegex::SetCompileOption
 		{
 		itsState = kRecompile;
 
-#ifndef PCRE_MAJOR
+#ifndef PCRE2_MAJOR
 		if ( (oldCFlags&REG_NOSUB) && !(itsCFlags&REG_NOSUB) )
 			{
 			// Set ridiculous value as flag for GetSubCount() to recompile;
@@ -1696,13 +1696,13 @@ JRegex::RegComp()
 		return JRegexError(kError, "empty pattern", 0);
 		}
 
-#ifdef PCRE_MAJOR
+#ifdef PCRE2_MAJOR
 	assert( itsRegex == NULL );
 
-	const char* errorMessage;
-	int errorOffset;
-	itsRegex = pcre_compile(itsPattern, itsCFlags,
-							&errorMessage, &errorOffset, NULL);
+	int errorCode;
+	PCRE2_SIZE errorOffset;
+	itsRegex = pcre2_compile((PCRE2_SPTR) itsPattern.GetCString(), PCRE2_ZERO_TERMINATED,
+							 itsCFlags, &errorCode, &errorOffset, NULL);
 	const int retVal = (itsRegex == NULL ? 1 : 0);
 #else
 	assert( RawGetOption(itsCFlags, REG_PEND) ); // Paranoia
@@ -1737,7 +1737,10 @@ JRegex::RegComp()
 		}
 	else
 		{
-#ifdef PCRE_MAJOR
+#ifdef PCRE2_MAJOR
+		JCharacter errorMessage[256];
+		pcre2_get_error_message(errorCode, (PCRE2_UCHAR*) errorMessage, sizeof(errorMessage));
+
 		const JRegexError error(kError, errorMessage, errorOffset+1);
 #else
 		const JSize msgLength = regerror(retVal, &itsRegex, NULL, 0);
@@ -1805,8 +1808,8 @@ JRegex::RegExec
 	regmatch_t* pmatch   = NULL;
 	JSize nmatch         = 1;
 
-#ifdef PCRE_MAJOR
-	nmatch = (subCount+1)*3;
+#ifdef PCRE2_MAJOR
+	nmatch = subCount+1;
 #else
 	if (matchList != NULL)
 		{
@@ -1817,14 +1820,28 @@ JRegex::RegExec
 	pmatch = new regmatch_t[ nmatch ];
 	assert( pmatch != NULL );
 
-#ifdef PCRE_MAJOR
-	int returnCode = pcre_exec(itsRegex, NULL, str, length, offset,
-							   itsEFlags, (int*) pmatch, nmatch);
+#ifdef PCRE2_MAJOR
+	pcre2_match_data* matchData = pcre2_match_data_create(nmatch, NULL);
+	assert( matchData != NULL );
+
+	int returnCode = pcre2_match(itsRegex, (PCRE2_SPTR) str, length, offset,
+								 itsEFlags, matchData, NULL);
 	if (returnCode > 0)
 		{
-		nmatch     = returnCode;
+		// PCRE2 reports unset subexpressions as PCRE2_UNSET, not -1
+
+		const PCRE2_SIZE* ovector = pcre2_get_ovector_pointer(matchData);
+
+		nmatch = returnCode;
+		for (JIndex i=0; i<nmatch; i++)
+			{
+			pmatch[i].rm_so = (ovector[2*i]   == PCRE2_UNSET ? -1 : (int) ovector[2*i]);
+			pmatch[i].rm_eo = (ovector[2*i+1] == PCRE2_UNSET ? -1 : (int) ovector[2*i+1]);
+			}
 		returnCode = 0;
 		}
+
+	pcre2_match_data_free(matchData);
 #else
 	assert( RawGetOption(itsEFlags, REG_STARTEND) ); // Paranoia
 
@@ -1895,10 +1912,10 @@ JRegex::RegExec
 void
 JRegex::RegFree()
 {
-#ifdef PCRE_MAJOR
+#ifdef PCRE2_MAJOR
 	if (itsRegex != NULL)
 		{
-		pcre_free(itsRegex);
+		pcre2_code_free(itsRegex);
 		itsRegex = NULL;
 
 		#ifdef JRE_ALLOC_CHECK

@@ -49,15 +49,15 @@ JInterpolate::JInterpolate()
 JInterpolate::JInterpolate
 	(
 	const JCharacter*			source,
-#ifdef PCRE_MAJOR
-	const pcre*					regex,
+#ifdef PCRE2_MAJOR
+	const pcre2_code*			regex,
 #endif
 	const JArray<JIndexRange>*	matchList
 	)
 	:
 	JSubstitute(),
 	itsSource(source),
-#ifdef PCRE_MAJOR
+#ifdef PCRE2_MAJOR
 	itsRegex(regex),
 #endif
 	itsMatchList(matchList)
@@ -88,7 +88,7 @@ JInterpolate::GetValue
 	const
 {
 	if (itsSource == NULL ||
-#ifdef PCRE_MAJOR
+#ifdef PCRE2_MAJOR
 		itsRegex == NULL  ||
 #endif
 		itsMatchList == NULL)
@@ -101,13 +101,13 @@ JInterpolate::GetValue
 	const JSize matchCount = itsMatchList->GetElementCount();
 
 	JInteger matchNumber;
-#ifdef PCRE_MAJOR
+#ifdef PCRE2_MAJOR
 	if (name.GetFirstCharacter() == '{')
 		{
 		assert( name.GetLastCharacter() == '}' );
 
 		const JString s = name.GetSubstring(2, name.GetLength()-1);
-		matchNumber     = pcre_get_stringnumber(itsRegex, s);
+		matchNumber     = pcre2_substring_number_from_name(itsRegex, (PCRE2_SPTR) s.GetCString());
 		if (matchNumber <= 0)
 			{
 			return kJTrue;
