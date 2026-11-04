@@ -1882,6 +1882,7 @@ JRegex::RegExec
 				}
 			}
 
+		delete[] pmatch;
 		return kJTrue;
 		}
 	else if (returnCode == REG_NOMATCH)
@@ -1895,10 +1896,12 @@ JRegex::RegExec
 			matchList->RemoveAll();
 			}
 */
+		delete[] pmatch;
 		return kJFalse;
 		}
 	else
 		{
+		delete[] pmatch;
 		assert( 0 );	// unexpected error
 		return kJFalse;
 		}
