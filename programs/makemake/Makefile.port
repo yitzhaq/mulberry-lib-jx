@@ -4,8 +4,6 @@ JX_ROOT := ../..
 
 CODEDIR  := .
 JCOREDIR := ${JX_ROOT}/include/jcore
-PCREDIR  := ${JX_ROOT}/misc/pcre
-REGEXDIR := ${JX_ROOT}/misc/regex
 
 JLIBDIR := ${JX_ROOT}/lib
 

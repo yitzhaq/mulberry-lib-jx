@@ -7,8 +7,6 @@ JX_ROOT := ../..
 
 CODEDIR  := .
 JCOREDIR := ${JX_ROOT}/include/jcore
-PCREDIR  := ${JX_ROOT}/misc/pcre
-REGEXDIR := ${JX_ROOT}/misc/regex
 
 JLIBDIR   := ${JX_ROOT}/lib
 ACELIBDIR := ${JX_ROOT}/ACE
@@ -66,7 +64,7 @@ Makefiles:
 
 .PHONY : regex
 regex:
-	@cd ${REGEXDIR}; ${MAKE} for_jcore
+	@echo "Using system PCRE2 and glibc regex"
 
 #
 # JX source distribution (DISTR_TAR_FILE)
