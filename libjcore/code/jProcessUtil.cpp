@@ -475,6 +475,10 @@ JExecute
 
 	else if (pid == 0)
 		{
+		// The parent may ignore SIGPIPE, and an ignored signal survives exec,
+		// so restore the default for the new program
+		signal(SIGPIPE, SIG_DFL);
+
 		const int stdinFD = fileno(stdin);
 		if (toAction == kJCreatePipe)
 			{
